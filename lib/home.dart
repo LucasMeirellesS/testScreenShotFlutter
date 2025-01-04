@@ -83,6 +83,8 @@ class _HomeState extends State<Home> {
                   )
                 : Center(
                     child: Container(
+                      height: 300,
+                      width: 400,
                       color: Colors.grey[300],
                       child: dataImage != null
                           ? Image.memory(dataImage!)
