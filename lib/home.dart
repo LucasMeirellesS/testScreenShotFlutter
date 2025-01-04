@@ -69,51 +69,18 @@ class _HomeState extends State<Home> {
     setState(() {
       dataImage = data;
     });
-    // await push(
-    //   context,
-    //   Scaffold(
-    //     appBar: AppBar(
-    //       title: const Text('PNG Image'),
-    //     ),
-    //     body: Center(
-    //       child: Container(
-    //         color: Colors.grey[300],
-    //         child: Image.memory(data),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 
-  Future<void> exportSVG(BuildContext context) async {
-    if (_controller.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          key: Key('snackbarSVG'),
-          content: Text('No content'),
-        ),
-      );
-      return;
-    }
+  void onShowSig() {
+    setState(() {
+      showSig = true;
+    });
+  }
 
-    final SvgPicture data = _controller.toSVG()!;
-
-    if (!mounted) return;
-
-    await push(
-      context,
-      Scaffold(
-        appBar: AppBar(
-          title: const Text('SVG Image'),
-        ),
-        body: Center(
-          child: Container(
-            color: Colors.grey[300],
-            child: data,
-          ),
-        ),
-      ),
-    );
+  void ofShowSig() {
+    setState(() {
+      showSig = false;
+    });
   }
 
   @override
@@ -122,31 +89,43 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('Signature Demo'),
       ),
-      body: ListView(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           //SIGNATURE CANVAS
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Signature(
-              key: const Key('signature'),
-              controller: _controller,
-              height: 300,
-              backgroundColor: Colors.grey[300]!,
-            ),
+            child: showSig
+                ? Signature(
+                    key: const Key('signature'),
+                    controller: _controller,
+                    height: 300,
+                    backgroundColor: Colors.grey[300]!,
+                  )
+                : SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: Container(
+                        color: Colors.grey[300],
+                        child: dataImage != null
+                            ? Image.memory(dataImage!)
+                            : Image.asset("assets/baixados.jpeg"),
+                      ),
+                    )),
           ),
-          Text(_controller.isEmpty
-              ? "Signature pad is empty"
-              : "Signature pad is not empty"),
-          SizedBox(
-              height: 300,
-              child: Center(
-                child: Container(
-                  color: Colors.grey[300],
-                  child: dataImage != null
-                      ? Image.memory(dataImage!)
-                      : Image.asset("assets/baixados.jpeg"),
-                ),
-              )),
+          // Text(_controller.isEmpty
+          //     ? "Signature pad is empty"
+          //     : "Signature pad is not empty"),
+          // SizedBox(
+          //     height: 300,
+          //     child: Center(
+          //       child: Container(
+          //         color: Colors.grey[300],
+          //         child: dataImage != null
+          //             ? Image.memory(dataImage!)
+          //             : Image.asset("assets/baixados.jpeg"),
+          //       ),
+          //     )),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -156,36 +135,24 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              IconButton(
+                key: const Key('BackToSig'),
+                icon: const Icon(Icons.arrow_back),
+                color: Colors.blue,
+                onPressed: () => onShowSig(),
+                tooltip: 'Show Signature',
+              ),
+
               //SHOW EXPORTED IMAGE IN NEW ROUTE
               IconButton(
                 key: const Key('exportPNG'),
                 icon: const Icon(Icons.image),
                 color: Colors.blue,
-                onPressed: () => exportImage(context),
+                onPressed: () {
+                  exportImage(context);
+                  ofShowSig();
+                },
                 tooltip: 'Export Image',
-              ),
-              IconButton(
-                key: const Key('BackToSig'),
-                icon: const Icon(Icons.arrow_back),
-                color: Colors.blue,
-                onPressed: () => exportSVG(context),
-                tooltip: 'Export SVG',
-              ),
-              IconButton(
-                icon: const Icon(Icons.undo),
-                color: Colors.blue,
-                onPressed: () {
-                  setState(() => _controller.undo());
-                },
-                tooltip: 'Undo',
-              ),
-              IconButton(
-                icon: const Icon(Icons.redo),
-                color: Colors.blue,
-                onPressed: () {
-                  setState(() => _controller.redo());
-                },
-                tooltip: 'Redo',
               ),
               //CLEAR CANVAS
               IconButton(

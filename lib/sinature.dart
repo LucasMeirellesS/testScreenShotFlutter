@@ -15,12 +15,12 @@ class Signature extends StatefulWidget {
   /// constructor
   const Signature({
     required this.controller,
-    Key? key,
+    super.key,
     this.backgroundColor = Colors.grey,
     this.dynamicPressureSupported = false,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   /// signature widget controller
   final SignatureController controller;
@@ -157,14 +157,14 @@ class SignatureState extends State<Signature> {
 
     // IF WIDGET IS USED WITHOUT DIMENSIONS, WE WILL FALLBACK TO SCREENSIZE
     // DIMENSIONS
-    final double _maxSafeWidth =
+    final double maxSafeWidth =
         maxWidth == double.infinity ? screenSize!.width : maxWidth;
-    final double _maxSafeHeight =
+    final double maxSafeHeight =
         maxHeight == double.infinity ? screenSize!.height : maxHeight;
 
     //SAVE POINT ONLY IF IT IS IN THE SPECIFIED BOUNDARIES
-    if ((screenSize?.width == null || o.dx > 0 && o.dx < _maxSafeWidth) &&
-        (screenSize?.height == null || o.dy > 0 && o.dy < _maxSafeHeight)) {
+    if ((screenSize?.width == null || o.dx > 0 && o.dx < maxSafeWidth) &&
+        (screenSize?.height == null || o.dy > 0 && o.dy < maxSafeHeight)) {
       // IF USER LEFT THE BOUNDARY AND ALSO RETURNED BACK
       // IN ONE MOVE, RETYPE IT AS TAP, AS WE DO NOT WANT TO
       // LINK IT WITH PREVIOUS POINT
@@ -233,7 +233,7 @@ class _SignaturePainter extends CustomPainter {
       : _penStyle = Paint(),
         super(repaint: _controller) {
     _penStyle
-      ..color = penColor != null ? penColor : _controller.penColor
+      ..color = penColor ?? _controller.penColor
       ..strokeWidth = _controller.penStrokeWidth
       ..strokeCap = _controller.strokeCap
       ..strokeJoin = _controller.strokeJoin;
