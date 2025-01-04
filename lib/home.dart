@@ -2,9 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:testescreenshot/sinature.dart';
-import 'package:testescreenshot/utils.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -113,19 +111,6 @@ class _HomeState extends State<Home> {
                       ),
                     )),
           ),
-          // Text(_controller.isEmpty
-          //     ? "Signature pad is empty"
-          //     : "Signature pad is not empty"),
-          // SizedBox(
-          //     height: 300,
-          //     child: Center(
-          //       child: Container(
-          //         color: Colors.grey[300],
-          //         child: dataImage != null
-          //             ? Image.memory(dataImage!)
-          //             : Image.asset("assets/baixados.jpeg"),
-          //       ),
-          //     )),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
