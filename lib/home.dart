@@ -26,25 +26,6 @@ class _HomeState extends State<Home> {
 
   Uint8List? dataImage;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller
-      ..addListener(() => log('Value changed'))
-      ..onDrawEnd = () => setState(
-            () {
-              // setState for build to update value of "empty label" in gui
-            },
-          );
-  }
-
-  @override
-  void dispose() {
-    // IMPORTANT to dispose of the controller
-    _controller.dispose();
-    super.dispose();
-  }
-
   Future<void> exportImage(BuildContext context) async {
     if (_controller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,16 +81,14 @@ class _HomeState extends State<Home> {
                     height: 300,
                     backgroundColor: Colors.grey[300]!,
                   )
-                : SizedBox(
-                    height: 300,
-                    child: Center(
-                      child: Container(
-                        color: Colors.grey[300],
-                        child: dataImage != null
-                            ? Image.memory(dataImage!)
-                            : Image.asset("assets/baixados.jpeg"),
-                      ),
-                    )),
+                : Center(
+                    child: Container(
+                      color: Colors.grey[300],
+                      child: dataImage != null
+                          ? Image.memory(dataImage!)
+                          : Image.asset("assets/baixados.jpeg"),
+                    ),
+                  ),
           ),
         ],
       ),
